@@ -1,0 +1,273 @@
+﻿.products {
+  margin-top: 36px;
+  margin-bottom: 30px;
+}
+
+.products-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 14px;
+
+  .line {
+    width: 360px;
+    height: 0;
+    opacity: 1;
+    border-top: 1px solid #d9d9d9;
+    flex: 0 0 360px;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #3442b5;
+  }
+}
+
+.products-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin-bottom: 24px;
+
+  button {
+    width: 214.16665649414062px;
+    height: 40px;
+    opacity: 1;
+    border: 1px solid #bdbdbd;
+    background: #fff;
+    padding: 12px 58px;
+    gap: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #3b3b3b;
+    line-height: 16px;
+    letter-spacing: 0;
+    vertical-align: middle;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  button + button {
+    margin-left: -1px;
+  }
+
+  .is-active {
+    color: #2f2ca8;
+    font-weight: 700;
+  }
+}
+
+.products-carousel,
+.related-products-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.carousel-track {
+  order: 2;
+}
+
+.arrow {
+  position: static;
+  transform: none;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #d7d7d7;
+  background: #fff;
+  color: #666;
+  font-size: 18px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+}
+
+.arrow-left {
+  order: 1;
+}
+
+.arrow-right {
+  order: 3;
+}
+
+.carousel-paged .carousel-track,
+.carousel-autoplay .carousel-track {
+  overflow: visible;
+}
+
+.carousel-scroll .carousel-track {
+  width: min(1270px, 100%);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  padding: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel-scroll .carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-scroll .grid {
+  width: max-content;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: 308px;
+}
+
+.carousel-scroll .grid > * {
+  scroll-snap-align: start;
+}
+
+.carousel-scroll {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.carousel-scroll .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+}
+
+.carousel-scroll .arrow-left {
+  left: -42px;
+}
+
+.carousel-scroll .arrow-right {
+  right: -34px;
+}
+
+.carousel-autoplay .grid {
+  animation-duration: 420ms;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 304px);
+  width: 1270px;
+  min-height: 500px;
+  opacity: 1;
+  gap: 18px;
+  justify-content: center;
+  margin: 0 auto;
+  animation: carousel-enter 300ms ease;
+}
+
+.grid.is-animating {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes carousel-enter {
+  from {
+    opacity: 0.35;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 1200px) {
+  .arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .products-header .line {
+    width: 220px;
+    flex-basis: 220px;
+  }
+
+  .products-header h2 {
+    font-size: 34px;
+  }
+
+  .products-tabs {
+    flex-wrap: wrap;
+    justify-content: stretch;
+
+    button {
+      width: calc(33.333% + 1px);
+      margin-left: 0;
+      margin-top: -1px;
+    }
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 304px);
+    width: max-content;
+  }
+
+  .carousel-scroll .grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 304px;
+  }
+
+  .carousel-scroll .carousel-track {
+    width: 626px;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-header .line {
+    width: 90px;
+    flex-basis: 90px;
+  }
+
+  .products-header h2 {
+    font-size: 28px;
+  }
+
+  .products-tabs {
+    button {
+      width: calc(50% + 1px);
+    }
+  }
+
+  .grid {
+    grid-template-columns: 304px;
+    width: max-content;
+  }
+
+  .carousel-scroll .grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 304px;
+  }
+
+  .carousel-scroll .carousel-track {
+    width: 304px;
+  }
+}

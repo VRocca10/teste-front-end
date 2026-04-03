@@ -1,0 +1,120 @@
+﻿.banner {
+  width: 100%;
+  height: 390px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.55) 30%,
+      rgba(0, 0, 0, 0.18) 100%
+    ),
+    url("../../assets/images/black_friday.svg") center center/cover no-repeat;
+}
+
+.banner .container {
+  width: min(1280px, 100% - 96px);
+  margin: 0 auto;
+}
+
+.banner-content {
+  color: #fff;
+
+  h1 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 50px;
+    letter-spacing: 0;
+  }
+
+  p {
+    margin: 22px 0 34px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0;
+
+    strong {
+      color: #f7ca11;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 100%;
+      letter-spacing: 0;
+    }
+  }
+
+  button {
+    width: 206px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background: #f7ca11;
+    padding: 7px 49px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #271c47;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 1024px) {
+  .banner .container {
+    width: calc(100% - 40px);
+  }
+
+  .banner {
+    height: 330px;
+  }
+
+  .banner-content {
+    h1 {
+      font-size: 46px;
+    }
+
+    p {
+      font-size: 36px;
+    }
+
+    button {
+      width: 180px;
+      height: 52px;
+      font-size: 26px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    height: 270px;
+  }
+
+  .banner-content {
+    h1 {
+      font-size: 34px;
+    }
+
+    p {
+      margin: 16px 0 22px;
+      font-size: 28px;
+    }
+
+    button {
+      width: 150px;
+      height: 46px;
+      font-size: 20px;
+    }
+  }
+}

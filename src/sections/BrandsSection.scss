@@ -1,0 +1,65 @@
+.brands-section {
+  background: #efefef;
+  padding: 28px 0 40px;
+
+  h2 {
+    margin: 0 0 32px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-align: center;
+    color: #3442b5;
+  }
+}
+
+.brands-row {
+  display: grid;
+  grid-template-columns: repeat(5, 211px);
+  width: 1223px;
+  height: 211px;
+  opacity: 1;
+  gap: 42px;
+  margin: 0 auto;
+}
+
+.brand-bubble {
+  width: 211px;
+  height: 211px;
+  opacity: 1;
+  border-radius: 105.5px;
+  background: #ffffff;
+  box-shadow: 0 7px 20px 0 #00000021;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 87px 47px;
+  gap: 10px;
+
+  .brand-logo {
+    width: 112px;
+    height: auto;
+    display: block;
+  }
+}
+
+@media (max-width: 1200px) {
+  .brands-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .brands-section h2 {
+    font-size: 32px;
+  }
+
+  .brands-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .brand-bubble .brand-logo {
+    width: 96px;
+  }
+}
