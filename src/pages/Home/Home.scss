@@ -1,4 +1,4 @@
-﻿.home-sections {
+.home-sections {
   display: flex;
   flex-direction: column;
 }
@@ -8,5 +8,9 @@
 }
 
 .home-sections > .home-categories {
-  margin-top: 39px;
+  margin-top: 36px;
+}
+
+.home-sections + .footer {
+  margin-top: 90px;
 }

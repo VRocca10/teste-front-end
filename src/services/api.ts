@@ -8,10 +8,18 @@ type ProductsResponse = {
 };
 
 const PRODUCTS_URL =
-  "/api/econverse/teste-front-end/junior/tecnologia/lista-produtos/produtos.json";
+  import.meta.env.VITE_PRODUCTS_URL ??
+  (import.meta.env.DEV
+    ? "/api/econverse/teste-front-end/junior/tecnologia/lista-produtos/produtos.json"
+    : "https://app.econverse.com.br/teste-front-end/junior/tecnologia/lista-produtos/produtos.json");
 
-let productsCache: Product[] | null = null;
-let productsPromise: Promise<Product[]> | null = null;
+export type ProductsResult = {
+  products: Product[];
+  isFallback: boolean;
+};
+
+let productsCache: ProductsResult | null = null;
+let productsPromise: Promise<ProductsResult> | null = null;
 
 const fallbackProducts: Product[] = [
   {
@@ -112,13 +120,20 @@ function toProduct(raw: RawProduct, index: number): Product | null {
     descriptionShort,
     photo,
     price,
-    oldPrice: getNumber(raw, ["oldPrice", "listPrice", "priceFrom"]),
+    oldPrice: getNumber(raw, [
+      "oldPrice",
+      "listPrice",
+      "priceFrom",
+      "priceOld",
+      "originalPrice",
+      "regularPrice",
+    ]),
     installmentText: getString(raw, ["installmentText", "installments", "paymentText"]),
     shippingText: getString(raw, ["shippingText", "shipping", "freightText"]),
   };
 }
 
-async function fetchAndNormalizeProducts(): Promise<Product[]> {
+async function fetchAndNormalizeProducts(): Promise<ProductsResult> {
   try {
     const res = await fetch(PRODUCTS_URL);
 
@@ -140,16 +155,16 @@ async function fetchAndNormalizeProducts(): Promise<Product[]> {
       throw new Error("Nenhum produto válido retornado pela API.");
     }
 
-    productsCache = normalizedProducts;
-    return normalizedProducts;
+    productsCache = { products: normalizedProducts, isFallback: false };
+    return productsCache;
   } catch (error) {
     console.warn("API indisponível no momento. Exibindo fallback local.", error);
-    productsCache = fallbackProducts;
-    return fallbackProducts;
+    productsCache = { products: fallbackProducts, isFallback: true };
+    return productsCache;
   }
 }
 
-export async function getProducts(): Promise<Product[]> {
+export async function getProducts(): Promise<ProductsResult> {
   if (productsCache) {
     return productsCache;
   }

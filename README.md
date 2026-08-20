@@ -56,6 +56,10 @@ npm run dev
 
 A aplicação ficará disponível no endereço exibido pelo Vite (normalmente `http://localhost:5173`).
 
+### Endpoint de produtos
+
+Em desenvolvimento, a API é acessada pelo proxy configurado no Vite. Em produção, é usada a URL pública da Econverse. Caso a hospedagem exija outro endpoint ou proxy, defina `VITE_PRODUCTS_URL` no ambiente de build.
+
 ## Comandos úteis
 
 ### Lint

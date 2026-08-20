@@ -3,11 +3,22 @@
   margin-bottom: 30px;
 }
 
+.products-status {
+  margin: 0 0 16px;
+  text-align: center;
+  color: #3f3f40;
+  font-size: 14px;
+}
+
+.products-status-warning {
+  color: #765700;
+}
+
 .products-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 34px;
   margin-bottom: 14px;
 
   .line {

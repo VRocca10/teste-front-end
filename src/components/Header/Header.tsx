@@ -1,5 +1,7 @@
-﻿import econverseLogo from "../../assets/images/econverse.svg";
+import econverseLogo from "../../assets/images/econverse.svg";
+import { useCart } from "../../contexts/CartContext";
 import "./Header.scss";
+import "./HeaderCart.scss";
 import {
   ShieldCheck,
   Truck,
@@ -13,6 +15,8 @@ import {
 } from "lucide-react";
 
 export function Header() {
+  const { itemsCount } = useCart();
+
   return (
     <header className="header">
       <div className="topbar">
@@ -40,17 +44,22 @@ export function Header() {
         </div>
 
         <div className="icons">
-          <button aria-label="Pedidos">
+          <button type="button" aria-label="Pedidos">
             <Package size={32} strokeWidth={2} />
           </button>
-          <button aria-label="Favoritos">
+          <button type="button" aria-label="Favoritos">
             <Heart size={32} strokeWidth={2} />
           </button>
-          <button aria-label="Perfil">
+          <button type="button" aria-label="Perfil">
             <CircleUserRound size={32} strokeWidth={2} />
           </button>
-          <button aria-label="Carrinho">
+          <button
+            type="button"
+            className="cart-button"
+            aria-label={`Carrinho com ${itemsCount} ${itemsCount === 1 ? "item" : "itens"}`}
+          >
             <ShoppingCart size={32} strokeWidth={2} />
+            {itemsCount > 0 && <span className="cart-count">{itemsCount}</span>}
           </button>
         </div>
       </div>

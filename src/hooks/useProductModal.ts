@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { Product } from "../types/Product";
 
 export function useProductModal() {
   const [selected, setSelected] = useState<Product | null>(null);
 
-  const openProduct = (product: Product) => {
+  const openProduct = useCallback((product: Product) => {
     setSelected(product);
-  };
+  }, []);
 
-  const closeProduct = () => {
+  const closeProduct = useCallback(() => {
     setSelected(null);
-  };
+  }, []);
 
   return {
     selected,

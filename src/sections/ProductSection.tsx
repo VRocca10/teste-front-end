@@ -1,23 +1,14 @@
-﻿import { useEffect, useRef, useState } from "react";
-import { ProductCard } from "../components/ProductCard/ProductCard";
+import { useEffect } from "react";
+import { ProductCarousel, type ProductSectionVariant } from "../components/ProductCarousel/ProductCarousel";
 import { ProductModal } from "../components/ProductModal/ProductModal";
-import { CarouselArrows } from "../components/shared/CarouselArrows";
+import { ProductTabs } from "../components/ProductTabs/ProductTabs";
 import { SectionTitle } from "../components/shared/SectionTitle";
 import { useCarousel } from "../hooks/useCarousel";
 import { useProductModal } from "../hooks/useProductModal";
 import { useProducts } from "../hooks/useProducts";
+import { useScrollCarousel } from "../hooks/useScrollCarousel";
 import "./ProductSection.scss";
 
-const categories = [
-  "CELULAR",
-  "ACESSORIOS",
-  "TABLETS",
-  "NOTEBOOKS",
-  "TVS",
-  "VER TODOS",
-];
-
-type ProductSectionVariant = "default" | "related";
 export type ProductCarouselVariant = "paged" | "autoplay" | "scroll" | "scrollAuto";
 
 type ProductSectionProps = {
@@ -31,13 +22,12 @@ export function ProductSection({
   title = "Produtos relacionados",
   carouselVariant = "paged",
 }: ProductSectionProps) {
-  const products = useProducts();
+  const { products, isLoading, isFallback } = useProducts();
   const { selected, openProduct, closeProduct } = useProductModal();
-  const scrollViewportRef = useRef<HTMLDivElement | null>(null);
-  const [scrollState, setScrollState] = useState({ canPrevious: false, canNext: false });
   const isAutoplay = carouselVariant === "autoplay";
   const isScroll = carouselVariant === "scroll" || carouselVariant === "scrollAuto";
   const isScrollAuto = carouselVariant === "scrollAuto";
+  const isRelated = variant === "related";
 
   const {
     itemsPerPage,
@@ -49,141 +39,35 @@ export function ProductSection({
     handlePrevious,
     handleNext,
   } = useCarousel(products, { loop: isAutoplay });
-
-  const isRelated = variant === "related";
-  const displayedProducts = isScroll ? products : visibleItems;
+  const {
+    viewportRef,
+    scrollState,
+    handlePrevious: handleScrollPrevious,
+    handleNext: handleScrollNext,
+  } = useScrollCarousel({
+    isActive: isScroll,
+    loop: isScrollAuto,
+    itemsCount: products.length,
+  });
 
   useEffect(() => {
     if (!isAutoplay || products.length <= itemsPerPage) return;
 
-    const intervalId = window.setInterval(() => {
-      handleNext();
-    }, 3800);
-
+    const intervalId = window.setInterval(handleNext, 3800);
     return () => window.clearInterval(intervalId);
-  }, [isAutoplay, products.length, itemsPerPage, handleNext]);
+  }, [handleNext, isAutoplay, itemsPerPage, products.length]);
 
-  const getScrollStep = () => {
-    const viewport = scrollViewportRef.current;
-    if (!viewport) return 320;
-
-    const firstCard = viewport.querySelector<HTMLElement>(".product-card");
-    const grid = viewport.querySelector<HTMLElement>(".grid");
-    const cardWidth = firstCard?.offsetWidth ?? 304;
-    const gap = Number.parseFloat(grid ? window.getComputedStyle(grid).gap : "18") || 18;
-
-    return cardWidth + gap;
-  };
-
-  const updateScrollState = () => {
-    const viewport = scrollViewportRef.current;
-    if (!viewport) return;
-
-    const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-    setScrollState({
-      canPrevious: viewport.scrollLeft > 1,
-      canNext: viewport.scrollLeft < maxScrollLeft - 1,
-    });
-  };
-
-  const handleScrollPrevious = () => {
-    const viewport = scrollViewportRef.current;
-    if (!viewport) return;
-    const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-    if (viewport.scrollLeft <= 1) {
-      if (isScrollAuto) {
-        viewport.scrollTo({ left: maxScrollLeft, behavior: "smooth" });
-      }
-      return;
-    }
-
-    const nextLeft = Math.max(0, viewport.scrollLeft - getScrollStep());
-    viewport.scrollTo({ left: nextLeft, behavior: "smooth" });
-  };
-
-  const handleScrollNext = () => {
-    const viewport = scrollViewportRef.current;
-    if (!viewport) return;
-    const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-
-    const atEnd = viewport.scrollLeft >= maxScrollLeft - 1;
-    if (atEnd) {
-      if (isScrollAuto) {
-        viewport.scrollTo({ left: 0, behavior: "smooth" });
-      }
-      return;
-    }
-
-    const nextLeft = Math.min(maxScrollLeft, viewport.scrollLeft + getScrollStep());
-    viewport.scrollTo({ left: nextLeft, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (!isScroll) return;
-
-    const viewport = scrollViewportRef.current;
-    if (!viewport) return;
-
-    const onScroll = () => updateScrollState();
-    const onResize = () => updateScrollState();
-
-    updateScrollState();
-    viewport.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", onResize);
-
-    const rafId = window.requestAnimationFrame(() => updateScrollState());
-
-    return () => {
-      viewport.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      window.cancelAnimationFrame(rafId);
-    };
-  }, [isScroll, products.length]);
-
-  useEffect(() => {
-    if (!isScrollAuto || products.length <= 1) return;
-
-    const intervalId = window.setInterval(() => {
-      const viewport = scrollViewportRef.current;
-      if (!viewport) return;
-
-      const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-      const atEnd = viewport.scrollLeft >= maxScrollLeft - 1;
-
-      if (atEnd) {
-        viewport.scrollTo({ left: 0, behavior: "smooth" });
-        return;
-      }
-
-      const nextLeft = Math.min(maxScrollLeft, viewport.scrollLeft + getScrollStep());
-      viewport.scrollTo({ left: nextLeft, behavior: "smooth" });
-    }, 3200);
-
-    return () => window.clearInterval(intervalId);
-  }, [isScrollAuto, products.length]);
-
-  const disablePagedPrevious = !hasPrevious;
-  const disablePagedNext = !hasNext;
-  const disableAutoplayArrows = products.length <= itemsPerPage;
-
-  const showDisabledPrevious = isScroll
-    ? isScrollAuto
-      ? false
-      : !scrollState.canPrevious
+  const disablePrevious = isScroll
+    ? !isScrollAuto && !scrollState.canPrevious
     : isAutoplay
-      ? disableAutoplayArrows
-      : disablePagedPrevious;
-
-  const showDisabledNext = isScroll
-    ? isScrollAuto
-      ? false
-      : !scrollState.canNext
+      ? products.length <= itemsPerPage
+      : !hasPrevious;
+  const disableNext = isScroll
+    ? !isScrollAuto && !scrollState.canNext
     : isAutoplay
-      ? disableAutoplayArrows
-      : disablePagedNext;
-
-  const onPrevious = isScroll ? handleScrollPrevious : handlePrevious;
-  const onNext = isScroll ? handleScrollNext : handleNext;
+      ? products.length <= itemsPerPage
+      : !hasNext;
+  const displayedProducts = isScroll ? products : visibleItems;
 
   const header = isRelated ? (
     <SectionTitle
@@ -197,34 +81,22 @@ export function ProductSection({
   );
 
   const carousel = (
-    <div
-      className={`${isRelated ? "related-products-carousel" : "products-carousel"} ${isScroll ? "carousel-scroll" : "carousel-paged"} ${isAutoplay ? "carousel-autoplay" : ""} ${isScrollAuto ? "carousel-scroll-auto" : ""}`}
-    >
-      <CarouselArrows
-        onPrevious={onPrevious}
-        onNext={onNext}
-        disablePrevious={showDisabledPrevious}
-        disableNext={showDisabledNext}
-      />
-
-      <div
-        className={`carousel-track ${isScroll ? "carousel-viewport" : ""}`}
-        ref={isScroll ? scrollViewportRef : null}
-      >
-        <div
-          key={isScroll ? `${variant}-scroll-${products.length}` : `${variant}-${safeStartIndex}-${itemsPerPage}`}
-          className={`grid ${isAnimating && !isScroll ? "is-animating" : ""}`}
-        >
-          {displayedProducts.map((product) => (
-            <ProductCard
-              key={`${variant}-${product.productId}`}
-              product={product}
-              onClick={() => openProduct(product)}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+    <ProductCarousel
+      variant={variant}
+      products={displayedProducts}
+      isScroll={isScroll}
+      isAutoplay={isAutoplay}
+      isScrollAuto={isScrollAuto}
+      isAnimating={isAnimating}
+      safeStartIndex={safeStartIndex}
+      itemsPerPage={itemsPerPage}
+      scrollViewportRef={viewportRef}
+      disablePrevious={disablePrevious}
+      disableNext={disableNext}
+      onPrevious={isScroll ? handleScrollPrevious : handlePrevious}
+      onNext={isScroll ? handleScrollNext : handleNext}
+      onProductClick={openProduct}
+    />
   );
 
   if (isRelated) {
@@ -243,16 +115,15 @@ export function ProductSection({
     <section className="products container">
       {header}
 
-      <nav className="products-tabs" aria-label="Categorias de produtos">
-        {categories.map((category, index) => (
-          <button key={category} type="button" className={index === 0 ? "is-active" : ""}>
-            {category}
-          </button>
-        ))}
-      </nav>
+      {isLoading && <p className="products-status" role="status">Carregando produtos...</p>}
+      {isFallback && !isLoading && (
+        <p className="products-status products-status-warning" role="status">
+          Exibindo produtos de demonstração enquanto a vitrine é atualizada.
+        </p>
+      )}
 
+      <ProductTabs />
       {carousel}
-
       <ProductModal product={selected} onClose={closeProduct} />
     </section>
   );

@@ -1,6 +1,5 @@
-﻿.partners-section {
+.partners-section {
   background: #efefef;
-  padding: 26px 0 34px;
 }
 
 .partners-grid {
@@ -31,7 +30,7 @@
   inset: 0;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.2) 65%);
   color: #fff;
-  padding: 0px 0px 40px 44px;
+  padding: 0 0 40px 44px;
   display: flex;
   flex-direction: column;
   gap: 17px;
@@ -54,7 +53,7 @@
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0;
-    color: #ffffff;
+    color: #fff;
   }
 
   button {
@@ -88,21 +87,26 @@
   }
 
   .partner-overlay {
-    padding: 28px 20px;
+    padding: 24px 12px;
+    gap: 18px;
+    justify-content: flex-start;
 
     h3 {
-      font-size: 38px;
+      font-size: 36px;
+      line-height: 36px;
     }
 
     p {
-      font-size: 22px;
-      margin: 10px 0 16px;
+      max-width: 160px;
+      margin: 0;
+      font-size: 16px;
+      line-height: 16px;
     }
 
     button {
-      width: 150px;
+      width: 144px;
       height: 48px;
-      font-size: 20px;
+      font-size: 16px;
     }
   }
 }

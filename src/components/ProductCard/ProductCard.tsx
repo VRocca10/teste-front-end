@@ -1,4 +1,4 @@
-﻿import type { SyntheticEvent } from "react";
+import type { SyntheticEvent } from "react";
 import econverseLogo from "../../assets/images/econverse.svg";
 import type { Product } from "../../types/Product";
 import "./ProductCard.scss";
@@ -25,12 +25,9 @@ function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
 }
 
 export function ProductCard({ product, onClick }: ProductCardProps) {
-  const installmentText = getInstallmentText(product.price);
+  const installmentText = product.installmentText ?? getInstallmentText(product.price);
   const shippingText = product.shippingText ?? "Frete grátis";
-  const descriptionText =
-    product.descriptionShort.toLowerCase().includes("lorem ipsum")
-      ? product.productName
-      : product.descriptionShort;
+  const oldPrice = product.oldPrice ?? 30.9;
 
   return (
     <article className="product-card">
@@ -41,10 +38,8 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
         aria-label={`Abrir detalhes do produto ${product.productName}`}
       >
         <img src={product.photo} alt={product.productName} onError={handleImageError} />
-        <p className="description">{descriptionText}</p>
-        {typeof product.oldPrice === "number" && (
-          <p className="old-price">R$ {formatPrice(product.oldPrice)}</p>
-        )}
+        <p className="description">{product.descriptionShort}</p>
+        <p className="old-price">R$ {formatPrice(oldPrice)}</p>
         <p className="current-price">R$ {formatPrice(product.price)}</p>
         <p className="installments">{installmentText}</p>
         <p className="shipping">{shippingText}</p>

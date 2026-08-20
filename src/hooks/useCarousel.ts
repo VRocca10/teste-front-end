@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type UseCarouselResult<T> = {
   itemsPerPage: number;
@@ -39,7 +39,7 @@ export function useCarousel<T>(items: T[], options: UseCarouselOptions = {}): Us
   const hasPrevious = safeStartIndex > 0;
   const hasNext = safeStartIndex + itemsPerPage < items.length;
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (!hasPrevious && !loop) return;
     setIsAnimating(true);
     if (!hasPrevious && loop) {
@@ -47,9 +47,9 @@ export function useCarousel<T>(items: T[], options: UseCarouselOptions = {}): Us
       return;
     }
     setStartIndex(Math.max(0, safeStartIndex - itemsPerPage));
-  };
+  }, [hasPrevious, itemsPerPage, loop, maxStart, safeStartIndex]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!hasNext && !loop) return;
     setIsAnimating(true);
     if (!hasNext && loop) {
@@ -57,7 +57,7 @@ export function useCarousel<T>(items: T[], options: UseCarouselOptions = {}): Us
       return;
     }
     setStartIndex(Math.min(safeStartIndex + itemsPerPage, maxStart));
-  };
+  }, [hasNext, itemsPerPage, loop, maxStart, safeStartIndex]);
 
   useEffect(() => {
     if (!isAnimating) return;
