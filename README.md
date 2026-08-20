@@ -1,119 +1,78 @@
 # Teste Front-End Econverse
 
-Projeto desenvolvido em **React + TypeScript + Sass** para o desafio técnico de Front-End da Econverse, com foco em fidelidade ao layout do Figma, componentização e boas práticas de código.
-
-## Visão geral
-
-A aplicação reproduz a home de e-commerce solicitada no desafio, incluindo:
-
-- Header completo com menu e busca
-- Banner principal
-- Faixa de categorias
-- Vitrine de produtos
-- Modal de detalhes do produto
-- Seções de parceiros e marcas
-- Footer com newsletter e links institucionais
+Aplicação de e-commerce desenvolvida em React, TypeScript e Sass para o desafio técnico da Econverse.
 
 ## Tecnologias
 
 - React 19
 - TypeScript
 - Vite
-- Sass (SCSS)
-- Lucide React (ícones)
-- React Icons (ícones sociais)
+- Sass
+- Vitest + React Testing Library
+- Lucide React e React Icons
 
-## Requisitos do desafio atendidos
+## Funcionalidades
 
-- Desenvolvimento em React + TypeScript
-- Consumo de produtos via JSON da Econverse
-- Modal com interação ao clicar no produto
-- Uso de pré-processador Sass
-- Sem uso de bibliotecas UI (Bootstrap/Foundation/etc.)
-- Estrutura componentizada
-- Organização de código por seções e componentes
-- SEO básico (lang, title, meta description)
-- HTML semântico em pontos-chave (main, section, article, nav, buttons acessíveis)
+- Vitrine de produtos com consumo de API e fallback local
+- Carrosséis paginado, automático e por rolagem
+- Modal de detalhes do produto
+- Controle de quantidade e inclusão no carrinho
+- Indicador de itens no carrinho
+- Layout responsivo baseado no Figma
+- HTML semântico e metadados básicos de SEO
 
-## Como executar localmente
-
-### 1. Pré-requisitos
-
-- Node.js 18+ (recomendado)
-- npm 9+
-
-### 2. Instalação
+## Como executar
 
 ```bash
 npm install
-```
-
-### 3. Rodar em desenvolvimento
-
-```bash
 npm run dev
 ```
 
-A aplicação ficará disponível no endereço exibido pelo Vite (normalmente `http://localhost:5173`).
+A aplicação ficará disponível no endereço mostrado pelo Vite.
 
-## Comandos úteis
+## Scripts
 
-### Lint
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia o ambiente de desenvolvimento |
+| `npm run build` | Gera a versão de produção |
+| `npm run preview` | Visualiza o build localmente |
+| `npm run lint` | Executa a análise estática |
+| `npm test` | Executa os testes |
+| `npm run test:watch` | Executa os testes em modo observação |
 
-```bash
-npm run lint
-```
+## Testes
 
-### Build de produção
+Os testes cobrem:
 
-```bash
-npm run build -- --configLoader native
-```
+- Normalização e fallback da API
+- Exibição dos dados no card de produto
+- Modal, quantidade e fechamento
+- Inclusão de itens no carrinho
+- Navegação do carrossel
 
-### Preview do build
-
-```bash
-npm run preview
-```
-
-## Arquitetura do projeto
+## Estrutura do projeto
 
 ```text
 src/
-├── assets/
-│   └── images/
-├── components/
-│   ├── Banner/
-│   ├── CategoryStrip/
-│   ├── Footer/
-│   ├── Header/
-│   ├── ProductCard/
-│   ├── ProductModal/
-│   └── shared/
-├── pages/
-│   └── Home/
-├── sections/
-├── services/
-│   └── api.ts
-├── styles/
-│   └── global.scss
-└── types/
+├── components/   # Componentes visuais reutilizáveis
+├── contexts/     # Estado compartilhado, como carrinho
+├── hooks/        # Lógicas reutilizáveis
+├── pages/        # Páginas da aplicação
+├── sections/     # Seções compostas da home
+├── services/     # Comunicação e normalização da API
+├── test/         # Configuração dos testes
+└── types/        # Tipos TypeScript
 ```
 
-## Destaques técnicos
+## Configuração da API
 
-- Componentes reutilizáveis para títulos de seção, setas, bolhas de marca e colunas de links
-- Modal com fechamento por clique fora e tecla `ESC`
-- Cartões de produto com fallback de imagem
-- Carrossel de produtos paginado com controle por breakpoint
-- Organização visual consistente com uso de variáveis e classes por contexto
+Em desenvolvimento, a aplicação usa o proxy do Vite. Para sobrescrever a URL de produtos em outro ambiente, defina:
 
-## Observações
-
-- O projeto foi construído com foco em fidelidade visual ao layout de referência e experiência de uso.
-- O favicon foi personalizado com a identidade visual da Econverse.
+```bash
+VITE_PRODUCTS_URL=https://sua-api.com/produtos.json
+```
 
 ## Autor
 
-Desenvolvido por **Vinicius Rocca** para o processo seletivo de Front-End da Econverse.
-
+Desenvolvido por Vinicius Rocca para o processo seletivo da Econverse.
