@@ -1,10 +1,11 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Product } from "../types/Product";
 
 type CartItem = { product: Product; quantity: number };
 
 type CartContextValue = {
   itemsCount: number;
+  notification: string | null;
   addItem: (product: Product, quantity: number) => void;
 };
 
@@ -12,6 +13,7 @@ const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [notification, setNotification] = useState<string | null>(null);
 
   const addItem = useCallback((product: Product, quantity: number) => {
     setItems((currentItems) => {
@@ -24,14 +26,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
           : item,
       );
     });
+    setNotification(`${quantity} ${quantity === 1 ? "item adicionado" : "itens adicionados"} ao carrinho`);
   }, []);
+
+  useEffect(() => {
+    if (!notification) return;
+
+    const timeoutId = window.setTimeout(() => setNotification(null), 3000);
+    return () => window.clearTimeout(timeoutId);
+  }, [notification]);
 
   const value = useMemo(
     () => ({
       itemsCount: items.reduce((total, item) => total + item.quantity, 0),
+      notification,
       addItem,
     }),
-    [addItem, items],
+    [addItem, items, notification],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

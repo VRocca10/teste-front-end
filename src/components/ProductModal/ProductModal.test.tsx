@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { CartProvider, useCart } from "../../contexts/CartContext";
 import type { Product } from "../../types/Product";
+import { CartToast } from "../CartToast/CartToast";
 import { ProductModal } from "./ProductModal";
 
 const product: Product = {
@@ -46,6 +47,7 @@ describe("ProductModal", () => {
       <CartProvider>
         <ProductModal product={product} onClose={onClose} />
         <CartCount />
+        <CartToast />
       </CartProvider>,
     );
 
@@ -53,6 +55,7 @@ describe("ProductModal", () => {
     fireEvent.click(screen.getByRole("button", { name: "COMPRAR" }));
 
     expect(screen.getByText("2")).toBeInTheDocument();
+    expect(screen.getByText("2 itens adicionados ao carrinho")).toBeInTheDocument();
     expect(onClose).toHaveBeenCalledOnce();
   });
 });
