@@ -21,24 +21,35 @@ Aplicação de e-commerce desenvolvida em React, TypeScript e Sass para o desafi
 - Layout responsivo baseado no Figma
 - HTML semântico e metadados básicos de SEO
 
-## Como executar
+## Como executar localmente
+
+Clone o repositório:
+
+```bash
+git clone <URL_DO_SEU_REPOSITORIO>
+```
+
+Acesse a pasta do projeto:
+
+```bash
+cd teste-front-end
+```
+
+Instale as dependências:
 
 ```bash
 npm install
+```
+
+Inicie o ambiente de desenvolvimento:
+
+```bash
 npm run dev
 ```
 
 A aplicação ficará disponível no endereço mostrado pelo Vite.
 
-<<<<<<< HEAD
-### Endpoint de produtos
-
-Em desenvolvimento, a API é acessada pelo proxy configurado no Vite. Em produção, é usada a URL pública da Econverse. Caso a hospedagem exija outro endpoint ou proxy, defina `VITE_PRODUCTS_URL` no ambiente de build.
-
-## Comandos úteis
-=======
 ## Scripts
->>>>>>> 54e068780ac69d3c6588566d9e90c8c4601d4aab
 
 | Comando | Descrição |
 | --- | --- |
@@ -59,6 +70,12 @@ Os testes cobrem:
 - Inclusão de itens no carrinho
 - Navegação do carrossel
 
+Para executar os testes:
+
+```bash
+npm test
+```
+
 ## Estrutura do projeto
 
 ```text
@@ -75,7 +92,9 @@ src/
 
 ## Configuração da API
 
-Em desenvolvimento, a aplicação usa o proxy do Vite. Para sobrescrever a URL de produtos em outro ambiente, defina:
+Em desenvolvimento, a aplicação usa o proxy do Vite.
+
+Para sobrescrever a URL de produtos em outro ambiente, defina a variável abaixo antes de gerar o build:
 
 ```bash
 VITE_PRODUCTS_URL=https://sua-api.com/produtos.json
