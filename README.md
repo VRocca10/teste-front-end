@@ -30,15 +30,14 @@ npm run dev
 
 A aplicação ficará disponível no endereço mostrado pelo Vite.
 
-<<<<<<< HEAD
+
 ### Endpoint de produtos
 
 Em desenvolvimento, a API é acessada pelo proxy configurado no Vite. Em produção, é usada a URL pública da Econverse. Caso a hospedagem exija outro endpoint ou proxy, defina `VITE_PRODUCTS_URL` no ambiente de build.
 
 ## Comandos úteis
-=======
-## Scripts
->>>>>>> 54e068780ac69d3c6588566d9e90c8c4601d4aab
+
+
 
 | Comando | Descrição |
 | --- | --- |
